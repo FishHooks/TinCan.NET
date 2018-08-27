@@ -52,7 +52,7 @@ namespace TinCan
             JObject result = new JObject();
             if (homePage != null)
             {
-                result.Add("homePage", homePage.ToString());
+                result.Add("homePage", homePage.OriginalString);
             }
             if (name != null)
             {

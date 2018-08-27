@@ -59,5 +59,30 @@ namespace TinCanTests
             Assert.IsInstanceOf<Agent>(obj);
             Assert.That(obj.mbox, Is.EqualTo(mbox));
         }
+
+        [Test]
+        public void TestAgentToJObjectAccountHomePage()
+        {
+            var url = "http://EXAMPLE.com/";
+
+            var cfgAgent = new JObject();
+            var cfgAccount = new JObject();
+
+            cfgAccount.Add("homePage", url);
+            cfgAgent.Add("account", cfgAccount);
+
+            var obj = new Agent(cfgAgent);
+            Assert.IsInstanceOf<Agent>(obj);
+            Assert.IsNotNull(obj.account);
+            Assert.IsInstanceOf<AgentAccount>(obj.account);
+            StringAssert.AreEqualIgnoringCase(url, obj.account.homePage.ToString());
+
+            var toJObj = obj.ToJObject();
+            Assert.IsNotNull(toJObj["account"]);
+            Assert.IsNotNull(toJObj["account"]["homePage"]);
+
+            var accountHomePage = toJObj.Value<JObject>("account").Value<String>("homePage");
+            Assert.That(url, Is.EqualTo(accountHomePage));
+        }
     }
 }
